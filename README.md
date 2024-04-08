@@ -1,2 +1,4 @@
 # golang-test-coverage
-![Coverage](https://img.shields.io/badge/Coverage-100.0%25-brightgreen)
+
+## backend coverage
+![Coverage](https://img.shields.io/badge/Coverage-75.0%25-brightgreen)

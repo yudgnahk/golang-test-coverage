@@ -1,4 +1,4 @@
-package golang_test_coverage
+package src
 
 func Minus(a, b int) int {
 	return a - b
