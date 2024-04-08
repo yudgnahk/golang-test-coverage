@@ -1,0 +1,63 @@
+name: "Tests-go"
+on:
+  pull_request:
+    branches: ['dev', main]
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    working-directory: src
+jobs:
+  reviewboard-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+          check-latest: true
+      # - name: Install dependencies
+      #   run: go get .
+      # - name: Build
+      #   run: go build -v ./...
+      # - name: Install gocover-cobertura
+      #   run: |
+      #       go get github.com/boumenot/gocover-cobertura && go install github.com/boumenot/gocover-cobertura
+      # # Install gotestfmt on the VM running the action.
+      # - name: Set up gotestfmt
+      #   uses: GoTestTools/gotestfmt-action@v2
+      #   with:
+      #     # Optional: pass the gotestfmt version you want to run.
+      #     version: v2.0.0
+      #     # Optional: pass an organization name and repo to use a fork
+      #     org: GoTestTools
+      #     repo: gotestfmt
+      - name: Run tests
+        run: go test -v -coverprofile coverage.out ./...
+
+      # - name: Convert go coverage to corbetura format
+      #   run: gocover-cobertura < coverage.txt > coverage.xml
+
+      # - name: Generate code coverage report
+      #   uses: irongut/CodeCoverageSummary@v1.3.0
+      #   with:
+      #     filename: apps/review_board/backend/coverage.xml
+      #     badge: false
+      #     fail_below_min: false
+      #     format: markdown
+      #     hide_branch_rate: false
+      #     hide_complexity: true
+      #     indicators: true
+      #     output: both
+      #     thresholds: '60 80'
+
+      - name: Update coverage report
+        uses: ncruces/go-coverage-report@main
+        with:
+          coverage-file: src/coverage.out
+          reuse-go: true
+          amend: true
