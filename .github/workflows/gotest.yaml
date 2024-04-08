@@ -6,6 +6,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+permissions:                
+  contents: write           
+  pull-requests: write
 # defaults:
 #   run:
 #     working-directory: src
@@ -40,7 +43,7 @@ jobs:
         run: |
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
-            git add README.md
+            git add .
             git commit -m "chore: Updated coverage badge."
   
       - name: Push changes
@@ -49,13 +52,4 @@ jobs:
         with:
           github_token: ${{ github.token }}
           branch: ${{ github.head_ref }}
-
-      - uses: seriousben/go-patch-cover-action@v1
-      # - name: Update coverage report
-      #   uses: ncruces/go-coverage-report@main
-      #   with:
-      #     coverage-file: coverage.out
-      #     amend: true
-      #     badge-title: Coverage (unit)
-      #     report: true
-      #     chart: true
+          force: true
