@@ -4,7 +4,8 @@ on:
     branches: ['dev', main, 'master']
     types: [opened, synchronize, reopened]
 permissions:
-  contents: write
+    contents: write
+    pull-requests: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -60,7 +61,7 @@ jobs:
       #     pwd
       #     ls
       #     cd src
-
+      - uses: seriousben/go-patch-cover-action@v1
       - name: Update coverage report
         uses: ncruces/go-coverage-report@main
         with:
