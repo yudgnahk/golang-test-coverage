@@ -8,9 +8,9 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-defaults:
-  run:
-    working-directory: src
+# defaults:
+#   run:
+#     working-directory: src
 jobs:
   go-test:
     runs-on: ubuntu-22.04
@@ -64,8 +64,7 @@ jobs:
       - name: Update coverage report
         uses: ncruces/go-coverage-report@main
         with:
-          working-directory: src
-          coverage-file: src/coverage.out
+          coverage-file: coverage.out
           amend: true
           badge-title: Coverage (unit)
           report: true
