@@ -12,7 +12,7 @@ defaults:
   run:
     working-directory: src
 jobs:
-  reviewboard-test:
+  go-test:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -55,9 +55,18 @@ jobs:
       #     output: both
       #     thresholds: '60 80'
 
+      # - name: Change directory to src
+      #   run: |
+      #     pwd
+      #     ls
+      #     cd src
+
       - name: Update coverage report
         uses: ncruces/go-coverage-report@main
         with:
+          working-directory: src
           coverage-file: src/coverage.out
-          reuse-go: true
           amend: true
+          badge-title: Coverage (unit)
+          report: true
+          chart: true
